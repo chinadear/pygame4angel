@@ -377,6 +377,7 @@ class Wall(BaseItem):
             for mm in my_hit_list:
                 mm.live = False
 
+
 if __name__ == '__main__':
     game = TankMain()
     game.start_game()
