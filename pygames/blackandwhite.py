@@ -19,6 +19,11 @@ class Main(object):
     map = map2
     result = False
     result_text = "黑白迭代"
+    pygame.mixer.init()
+    click_sound = pygame.mixer.Sound(r"sound/click.wav")
+    pygame.mixer.music.load(r"sound/backmuzic.mp3")
+    pygame.mixer.music.play()
+
     # 采用[0]]*n 的方式创建数组，仅仅是创建n个指向[0]的指针，也就是这n个列表指向同一个，修改一个其他均修改
     # map2 = [[0]*num]*num
     def start_game(self):
@@ -31,7 +36,10 @@ class Main(object):
         while True:
             screen.fill((0, 0, 0))
             # screen.blit(self.write_text(), (5, 5))
-
+            if pygame.mixer.music.get_busy():
+                pass
+            else:
+                pygame.mixer.music.rewind()
             Main.draw_map(self, screen, Main.map)
             if Main.result:
                 pygame.display.set_caption(Main.result_text)
@@ -48,6 +56,8 @@ class Main(object):
                 if pygame.mouse.get_focused():
                     p = pygame.mouse.get_pos()
                     self.deal_mousedown(p)
+                    Main.click_sound.play()
+
             if event.type == KEYDOWN:
                 pygame.display.set_caption("黑白迭代")
                 if event.key == K_SPACE:
