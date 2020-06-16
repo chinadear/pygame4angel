@@ -53,7 +53,7 @@ class Main(object):
                 if event.key == K_SPACE:
                     Main.map = Main.map1
                 if event.key == K_1:
-                    Main.tm = 1
+                    Main.tm = 3
                     self.init_map()
                 if event.key == K_2:
                     Main.tm = 10
@@ -89,17 +89,34 @@ class Main(object):
         if y+1 <= 9:
             Main.map2[x][y+1] = 0 if Main.map2[x][y+1] == 1 else 1
 
+    def deal_index(self, x, y):
+        Main.map1[x][y] = 0 if Main.map1[x][y] == 1 else 1
+        if x - 1 >= 0:
+            Main.map1[x - 1][y] = 0 if Main.map1[x - 1][y] == 1 else 1
+        if x + 1 <= 9:
+            Main.map1[x + 1][y] = 0 if Main.map1[x + 1][y] == 1 else 1
+        if y - 1 >= 0:
+            Main.map1[x][y - 1] = 0 if Main.map1[x][y - 1] == 1 else 1
+        if y + 1 <= 9:
+            Main.map1[x][y + 1] = 0 if Main.map1[x][y + 1] == 1 else 1
+
     def init_map(self):
         for i in range(Main.num):
             for j in range(Main.num):
                 Main.map1[i][j] = 0
                 Main.map2[i][j] = 0
+        Main.auto_targetmap(self)
+
+    # 自动创建目标map
+    def auto_targetmap(self):
         # 初始化目标图形矩阵
         for a in range(Main.tm):
             x = randint(0, 4)
             y = randint(0, 9)
-            Main.map1[x][y] = 1
-            Main.map1[Main.num-1-x][y] = 1
+            self.deal_index(x, y)
+            self.deal_index(Main.num - 1 - x, y)
+            # Main.map1[x][y] = 1
+            # Main.map1[Main.num - 1 - x][y] = 1
 
     def result_compare(self):
         a = np.array(Main.map1)
