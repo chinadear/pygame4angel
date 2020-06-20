@@ -53,18 +53,19 @@ class Main(object):
                 if event.key == K_SPACE:
                     Main.map = Main.map1
                 if event.key == K_1:
-                    Main.tm = 1
+                    Main.tm = 3
                     self.init_map()
                 if event.key == K_2:
-                    Main.tm = 10
+                    Main.tm = 5
                     self.init_map()
                 if event.key == K_3:
-                    Main.tm = 15
+                    Main.tm = 10
                     self.init_map()
                 if event.key == K_4:
                     Main.tm = 20
                     self.init_map()
-
+                if event.key == K_d:
+                    self.init_map2()
             if event.type == KEYUP:
                 if event.key == K_SPACE:
                     Main.map = Main.map2
@@ -89,6 +90,18 @@ class Main(object):
         if y+1 <= 9:
             Main.map2[x][y+1] = 0 if Main.map2[x][y+1] == 1 else 1
 
+    def init_map1(self, x, y):
+        Main.map1[x][y] = 0 if Main.map1[x][y] == 1 else 1
+        if x-1 >= 0:
+            Main.map1[x-1][y] = 0 if Main.map1[x-1][y] == 1 else 1
+        if x+1 <= 9:
+            Main.map1[x+1][y] = 0 if Main.map1[x+1][y] == 1 else 1
+        if y-1 >= 0:
+            Main.map1[x][y-1] = 0 if Main.map1[x][y-1] == 1 else 1
+        if y+1 <= 9:
+            Main.map1[x][y+1] = 0 if Main.map1[x][y+1] == 1 else 1
+
+
     def init_map(self):
         for i in range(Main.num):
             for j in range(Main.num):
@@ -98,8 +111,15 @@ class Main(object):
         for a in range(Main.tm):
             x = randint(0, 4)
             y = randint(0, 9)
-            Main.map1[x][y] = 1
-            Main.map1[Main.num-1-x][y] = 1
+            self.init_map1(x, y)
+            self.init_map1(Main.num-1-x, y)
+            # Main.map1[x][y] = 1
+            # Main.map1[Main.num-1-x][y] = 1
+
+    def init_map2(self):
+        for i in range(Main.num):
+            for j in range(Main.num):
+                Main.map2[i][j] = 0
 
     def result_compare(self):
         a = np.array(Main.map1)
