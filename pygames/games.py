@@ -21,16 +21,21 @@ class TankMain(object):
     die_num = 0
     win_num = 1
     my_tank = None
+    wall = None
+    p = (0, 0)
     def start_game(self):
         # 初始化，加载系统资源
         pygame.init()
         # 绘制界面，返回surface对象
         screen = pygame.display.set_mode((TankMain.width, TankMain.height), 0, 32)
         TankMain.my_tank = MyTank(screen, 275, 400)
-        wall = Wall(screen, 80, 200, 30, 120)
+        TankMain.wall = Wall(screen, 80, 200, 30, 120)
         for i in range(1, TankMain.enamy_num):
             TankMain.enamy_list.add(EnamyTank(screen))
         pygame.display.set_caption("坦克大战")
+        # 是否显示鼠标光标
+        # pygame.mouse.set_visible(False)
+
         # 刷新渲染动作
         while True:
             screen.fill((0, 0, 0))
@@ -38,12 +43,14 @@ class TankMain(object):
                 screen.blit(text, (0, 5+(15*i)))
             self.get_event()
 
-            wall.show()
+            TankMain.wall.show()
             TankMain.my_tank.show()
             TankMain.my_tank.hited_by_enamy()
             TankMain.my_tank.move()
-            wall.hit_other()
+            TankMain.wall.hit_other()
 
+            if pygame.mouse.get_focused():
+                TankMain.p = pygame.mouse.get_pos()
             if TankMain.blood_num == 0:
                 time.sleep(3)  # 刷新率
                 TankMain.my_tank = None
@@ -112,6 +119,8 @@ class TankMain(object):
                     m = TankMain.my_tank.fire()
                     m.good = True
                     TankMain.my_missibles.append(m)
+                if event.key == K_a:
+                    TankMain.wall.color = (125, 125, 125)
             if event.type == KEYUP:
                 if event.key == K_LEFT:
                     if TankMain.my_tank.direction == "L":
@@ -125,6 +134,13 @@ class TankMain(object):
                 elif event.key == K_DOWN:
                     if TankMain.my_tank.direction == "D":
                         TankMain.my_tank.stop = True
+                elif event.key == K_a:
+                    TankMain.wall.color = (125, 125, 225)
+            if event.type == MOUSEBUTTONDOWN:
+                TankMain.wall.color = (125, 225, 225)
+
+            if event.type == MOUSEBUTTONUP:
+                TankMain.wall.color = (255, 125, 225)
 
     def stop_game(self):
         sys.exit()
@@ -132,14 +148,15 @@ class TankMain(object):
     # 在界面中写字
     def write_text(self):
         # 定义一个字体思源黑体cnbold
-        font = pygame.font.SysFont("华文宋体", 15)   # 华文宋体
+        font = pygame.font.SysFont("思源黑体cnbold", 15)   # 华文宋体
         # 绘制文字
         text1 = font.render("敌方数量：{}".format(TankMain.enamy_list.__len__()), True, (255, 0, 0))
         text2 = font.render("我方血量：{}".format(TankMain.blood_num), True, (255, 0, 0))
         text3 = font.render("消灭敌方：{}".format(TankMain.score), True, (255, 0, 0))
         text4 = font.render("死亡次数：{}".format(TankMain.die_num), True, (255, 0, 0))
         text5 = font.render("第{}关".format(TankMain.win_num), True, (255, 0, 0))
-        return text1, text2, text3, text4, text5
+        text6 = font.render("鼠标位置{}:{}".format(TankMain.p[0], TankMain.p[1]), True, (255, 0, 0))
+        return text1, text2, text3, text4, text5, text6
 
 
 class BaseItem(pygame.sprite.Sprite):
