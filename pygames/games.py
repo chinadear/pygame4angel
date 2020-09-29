@@ -11,6 +11,7 @@ from pygame.locals import *
 class TankMain(object):
     width = 1300
     height = 700
+    # 创建一个精灵组
     enamy_list = pygame.sprite.Group()
     enamy_missibles = pygame.sprite.Group()
     my_missibles = []
@@ -23,6 +24,7 @@ class TankMain(object):
     my_tank = None
     wall = None
     p = (0, 0)
+
     def start_game(self):
         # 初始化，加载系统资源
         pygame.init()
@@ -159,6 +161,7 @@ class TankMain(object):
         return text1, text2, text3, text4, text5, text6
 
 
+# 精灵基类
 class BaseItem(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -169,6 +172,7 @@ class BaseItem(pygame.sprite.Sprite):
             self.screen.blit(self.image, self.rect)
 
 
+# 坦克父类
 class Tank(BaseItem):
     width = 50
     height = 50
@@ -218,12 +222,13 @@ class Tank(BaseItem):
         self.rect.left = self.oldleft
 
 
+# 我方坦克
 class MyTank(Tank):
     def __init__(self, screen, left, top):
-        self.images = {"L": pygame.image.load(r"images/mytank_l.png"),
-                       "R": pygame.image.load(r"images/mytank_r.png"),
-                       "D": pygame.image.load(r"images/mytank_d.png"),
-                       "U": pygame.image.load(r"images/mytank_u.png")}
+        self.images = {"L": pygame.image.load(r"images/tank/mytank_l.png"),
+                       "R": pygame.image.load(r"images/tank/mytank_r.png"),
+                       "D": pygame.image.load(r"images/tank/mytank_d.png"),
+                       "U": pygame.image.load(r"images/tank/mytank_u.png")}
         super().__init__(screen, left, top, self.images)
         self.stop = True
 
@@ -237,12 +242,13 @@ class MyTank(Tank):
                 TankMain.blood_num = 0
 
 
+# 敌方坦克
 class EnamyTank(Tank):
     def __init__(self, screen):
-        self.images = {"L": pygame.image.load(r"images/tank_l.png"),
-                       "R": pygame.image.load(r"images/tank_r.png"),
-                       "D": pygame.image.load(r"images/tank_d.png"),
-                       "U": pygame.image.load(r"images/tank_u.png")}
+        self.images = {"L": pygame.image.load(r"images/tank/tank_l.png"),
+                       "R": pygame.image.load(r"images/tank/tank_r.png"),
+                       "D": pygame.image.load(r"images/tank/tank_d.png"),
+                       "U": pygame.image.load(r"images/tank/tank_u.png")}
         super().__init__(screen, randint(1, 5)*100, 200, self.images)
         self.stop = True
         self.step = 15
@@ -281,6 +287,7 @@ class EnamyTank(Tank):
             return
 
 
+# 炮弹
 class Missibl(BaseItem):
     width = 20
     height = 20
@@ -289,10 +296,10 @@ class Missibl(BaseItem):
         self.screen = screen
         self.tank = tank
         super().__init__()
-        self.images = {"L": pygame.image.load(r"images/padan_l.png"),
-                       "R": pygame.image.load(r"images/padan_r.png"),
-                       "D": pygame.image.load(r"images/padan_d.png"),
-                       "U": pygame.image.load(r"images/padan_u.png")}
+        self.images = {"L": pygame.image.load(r"images/tank/padan_l.png"),
+                       "R": pygame.image.load(r"images/tank/padan_r.png"),
+                       "D": pygame.image.load(r"images/tank/padan_d.png"),
+                       "U": pygame.image.load(r"images/tank/padan_u.png")}
         self.direction = tank.direction
         self.speed = 12
         self.image = self.images[self.direction]
@@ -328,6 +335,7 @@ class Missibl(BaseItem):
 
     def hit_tank(self):
         if self.good:
+            # 冲突检测，两个精灵是否碰撞
             hit_list = pygame.sprite.spritecollide(self, TankMain.enamy_list, False)
             for e in hit_list:
                 e.live = False
@@ -342,10 +350,10 @@ class Boom(BaseItem):
         super().__init__()
         self.screen = screen
         self.live = True
-        self.images = [pygame.image.load(r"images/boom20.png"),
-                       pygame.image.load(r"images/boom40.png"),
-                       pygame.image.load(r"images/boom60.png"),
-                       pygame.image.load(r"images/boom70.png")]
+        self.images = [pygame.image.load(r"images/tank/boom20.png"),
+                       pygame.image.load(r"images/tank/boom40.png"),
+                       pygame.image.load(r"images/tank/boom60.png"),
+                       pygame.image.load(r"images/tank/boom70.png")]
         self.step = 0
         self.rect = rect
 
