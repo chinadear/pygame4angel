@@ -30,7 +30,7 @@ class Main(object):
     # 首页 500*375
     mainpage = pygame.image.load(r"images/mainpage.png")
     # 计时器，时间限制
-    time_count = 10
+    time_count = 60
     time_count_bak = 0
     # 当前时间
     current_time = 0

@@ -19,6 +19,7 @@ class Main(object):
     image2 = pygame.image.load(r"ngame/2.png")      # 展示
     image = image1
     result = 0  # 0进行中，1成功,2失败
+
     def start_game(self):
         # 初始化，加载系统资源
         pygame.init()
