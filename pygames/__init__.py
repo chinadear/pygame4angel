@@ -1,5 +1,5 @@
 #  pygame 打包方法
-# 1.下载安装pyinstaller
+# 1.下载安装pyinstaller安装命令，pip install pyinstaller -i https://pypi.tuna.tsinghua.edu.cn/simple/
 # 2.找到安装目录一般在安装目录的Scripts文件夹下，找到pyinstaller.exe
 # 3.将要打包的文件拷贝到pyinstaller.exe同目录下
 # 4.cmd 进入pyinstaller.exe目录，执行pyinstaller -w -F blackandwhite.py(games.py是当前打包的内容，-w是单个文件，-F是exe文件，具体参数可自行搜索)
